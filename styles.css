@@ -50,6 +50,13 @@ button {
     cursor: pointer;
 }
 
+.delete-button {
+    background-color: #ffcccc;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
 #bracket {
     display: flex;
     justify-content: space-between;
@@ -81,11 +88,4 @@ button {
 
 .map-button.decider {
     background-color: #ccffcc;
-}
-
-.delete-button {
-    background-color: #ffcccc;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
 }
