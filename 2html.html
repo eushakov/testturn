@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Турнир "За ящик пива"</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Турнир "За ящик пива"</h1>
+
+        <!-- Таблица участников -->
+        <h2>Участники</h2>
+        <table id="participants">
+            <thead>
+                <tr>
+                    <th>Ник ТГ</th>
+                    <th>Faceit lvl</th>
+                    <th>Premier elo</th>
+                    <th>Личная оценка игры</th>
+                    <th>Взнос</th>
+                    <th>Дополнительно</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" placeholder="Ник"></td>
+                    <td><input type="number" placeholder="Уровень"></td>
+                    <td><input type="number" placeholder="ELO"></td>
+                    <td><input type="number" placeholder="Оценка"></td>
+                    <td><input type="text" placeholder="Взнос"></td>
+                    <td><input type="checkbox"> <input type="text" placeholder="Инфо"></td>
+                </tr>
+                <!-- Добавьте больше строк по аналогии -->
+            </tbody>
+        </table>
+
+        <!-- Таблица команд -->
+        <h2>Команды</h2>
+        <table id="teams">
+            <thead>
+                <tr>
+                    <th>Капитан</th>
+                    <th>Игроки</th>
+                    <th>Замены</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" placeholder="Капитан"></td>
+                    <td><input type="text" placeholder="Игрок 1"></td>
+                    <td><input type="text" placeholder="Замена 1"></td>
+                </tr>
+                <!-- Добавьте больше строк по аналогии -->
+            </tbody>
+        </table>
+
+        <!-- Турнирная сетка -->
+        <h2>Турнирная сетка</h2>
+        <div id="bracket">
+            <!-- Пример сетки -->
+            <div class="round">
+                <div class="match">
+                    <input type="text" placeholder="Команда 1"> vs <input type="text" placeholder="Команда 2">
+                </div>
+                <!-- Добавьте больше матчей -->
+            </div>
+            <div class="round">
+                <div class="match">
+                    <input type="text" placeholder="Победитель 1"> vs <input type="text" placeholder="Победитель 2">
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица результатов -->
+        <h2>Результаты матчей</h2>
+        <table id="results">
+            <thead>
+                <tr>
+                    <th>Матч</th>
+                    <th>Результат</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" placeholder="Команда 1 vs Команда 2"></td>
+                    <td><input type="text" placeholder="Результат"></td>
+                </tr>
+                <!-- Добавьте больше строк по аналогии -->
+            </tbody>
+        </table>
+
+        <!-- Таблица пиков карт -->
+        <h2>Пики карт</h2>
+        <table id="map-picks">
+            <thead>
+                <tr>
+                    <th>Ban</th>
+                    <th>Ban</th>
+                    <th>Ban</th>
+                    <th>Decider</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><button class="ban">Ban</button></td>
+                    <td><button class="ban">Ban</button></td>
+                    <td><button class="ban">Ban</button></td>
+                    <td><button class="decider">Decider</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
