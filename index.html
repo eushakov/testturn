@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +10,8 @@
     <div class="container">
         <h1>Турнир "За ящик пива"</h1>
 
-        <!-- Таблица участников -->
+        <!-- Участники -->
         <h2>Участники</h2>
-        <button onclick="addParticipant()">Добавить участника</button>
         <table id="participants">
             <thead>
                 <tr>
@@ -20,66 +19,85 @@
                     <th>Faceit lvl</th>
                     <th>Premier elo</th>
                     <th>Личная оценка игры</th>
-                    <th>Взнос <input type="checkbox"></th>
+                    <th>Взнос</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
+        <button onclick="addParticipant()">+</button>
 
-        <!-- Таблица команд -->
+        <!-- Команды -->
         <h2>Команды</h2>
-        <button onclick="addTeam()">Добавить команду</button>
         <table id="teams">
             <thead>
                 <tr>
                     <th>Капитан</th>
-                    <th>Игроки</th>
-                    <th>Замены</th>
+                    <th>Игрок 1</th>
+                    <th>Игрок 2</th>
+                    <th>Игрок 3</th>
+                    <th>Игрок 4</th>
+                    <th>Замена 1</th>
+                    <th>Замена 2</th>
+                    <th>Замена 3</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
+        <button onclick="addTeam()">+</button>
 
         <!-- Турнирная сетка -->
         <h2>Турнирная сетка</h2>
         <div id="bracket">
-            <!-- Пример сетки -->
             <div class="round">
                 <div class="match">
-                    <div class="team-cell"><input type="text" placeholder="Команда 1"></div>
-                    <div class="team-cell"><input type="text" placeholder="Команда 2"></div>
+                    <input type="text" placeholder="Команда 1">
+                    <span>vs</span>
+                    <input type="text" placeholder="Команда 2">
                 </div>
-                <!-- Добавьте больше матчей -->
+                <div class="match">
+                    <input type="text" placeholder="Команда 3">
+                    <span>vs</span>
+                    <input type="text" placeholder="Команда 4">
+                </div>
             </div>
             <div class="round">
                 <div class="match">
-                    <div class="team-cell"><input type="text" placeholder="Победитель 1"></div>
-                    <div class="team-cell"><input type="text" placeholder="Победитель 2"></div>
+                    <span>Победитель матча 1</span>
+                    <span>vs</span>
+                    <span>Победитель матча 2</span>
+                </div>
+            </div>
+            <div class="round">
+                <div class="match">
+                    <span>Проигравший матч 1</span>
+                    <span>vs</span>
+                    <span>Проигравший матч 2</span>
                 </div>
             </div>
         </div>
 
-        <!-- Таблица результатов -->
+        <!-- Результаты матчей -->
         <h2>Результаты матчей</h2>
         <table id="results">
             <thead>
                 <tr>
-                    <th>Матч</th>
-                    <th>Результат</th>
+                    <th>Команда 1</th>
+                    <th>Счет</th>
+                    <th>Команда 2</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
 
-        <!-- Таблица пиков карт -->
+        <!-- Пики карт -->
         <h2>Пики карт</h2>
-        <table id="map-picks">
+        <table id="mapPicks">
             <thead>
                 <tr>
                     <th>Ban</th>
@@ -91,23 +109,15 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><button class="map-button" data-map="mirage">Mirage</button></td>
-                    <td><button class="map-button" data-map="dust2">Dust 2</button></td>
-                    <td><button class="map-button" data-map="inferno">Inferno</button></td>
-                    <td><button class="map-button" data-map="nuke">Nuke</button></td>
-                    <td><button class="map-button" data-map="anubis">Anubis</button></td>
-                </tr>
-                <tr>
-                    <td><button class="map-button" data-map="ancient">Ancient</button></td>
-                    <td><button class="map-button" data-map="train">Train</button></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><button class="map-button">Mirage</button></td>
+                    <td><button class="map-button">Dust 2</button></td>
+                    <td><button class="map-button">Inferno</button></td>
+                    <td><button class="map-button">Nuke</button></td>
+                    <td><button class="map-button">Anubis</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
