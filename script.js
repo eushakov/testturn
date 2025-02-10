@@ -4,11 +4,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const table = document.querySelector('#participants tbody');
         const row = table.insertRow();
         row.innerHTML = `
-            <td><input type="text" placeholder="Ник"></td>
-            <td><input type="number" placeholder="Уровень"></td>
-            <td><input type="number" placeholder="ELO"></td>
-            <td><input type="number" placeholder="Оценка"></td>
-            <td><input type="text" placeholder="Взнос"> <input type="checkbox"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="checkbox"></td>
+            <td><button onclick="removeRow(this)">-</button></td>
         `;
     }
 
@@ -17,10 +18,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const table = document.querySelector('#teams tbody');
         const row = table.insertRow();
         row.innerHTML = `
-            <td><input type="text" placeholder="Капитан"></td>
-            <td><input type="text" placeholder="Игрок 1"></td>
-            <td><input type="text" placeholder="Замена 1"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><button onclick="removeRow(this)">-</button></td>
         `;
+    }
+
+    // Удаление строки
+    function removeRow(button) {
+        button.closest('tr').remove();
     }
 
     // Логика для пиков карт
@@ -40,19 +52,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Логика для выбора матча в результатах
-    const resultsTable = document.querySelector('#results tbody');
+    // Обновление результатов матчей
     const bracketMatches = document.querySelectorAll('.match');
+    const resultsTable = document.querySelector('#results tbody');
 
     bracketMatches.forEach(match => {
         match.addEventListener('click', () => {
-            const team1 = match.querySelector('.team-cell:nth-child(1) input').value;
-            const team2 = match.querySelector('.team-cell:nth-child(2) input').value;
-            const row = resultsTable.insertRow();
-            row.innerHTML = `
-                <td>${team1} vs ${team2}</td>
-                <td><input type="text" placeholder="Результат"></td>
-            `;
+            const team1 = match.querySelector('input:nth-child(1)').value || match.querySelector('span:nth-child(1)').textContent;
+            const team2 = match.querySelector('input:nth-child(3)').value || match.querySelector('span:nth-child(3)').textContent;
+
+            if (team1 && team2) {
+                const row = resultsTable.insertRow();
+                row.innerHTML = `
+                    <td>${team1}</td>
+                    <td><input type="text" placeholder="Счет"></td>
+                    <td>${team2}</td>
+                    <td><button onclick="removeRow(this)">-</button></td>
+                `;
+            }
         });
     });
 });
