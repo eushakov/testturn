@@ -12,6 +12,7 @@
 
         <!-- Таблица участников -->
         <h2>Участники</h2>
+        <button onclick="addParticipant()">Добавить участника</button>
         <table id="participants">
             <thead>
                 <tr>
@@ -19,25 +20,17 @@
                     <th>Faceit lvl</th>
                     <th>Premier elo</th>
                     <th>Личная оценка игры</th>
-                    <th>Взнос</th>
-                    <th>Дополнительно</th>
+                    <th>Взнос <input type="checkbox"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text" placeholder="Ник"></td>
-                    <td><input type="number" placeholder="Уровень"></td>
-                    <td><input type="number" placeholder="ELO"></td>
-                    <td><input type="number" placeholder="Оценка"></td>
-                    <td><input type="text" placeholder="Взнос"></td>
-                    <td><input type="checkbox"> <input type="text" placeholder="Инфо"></td>
-                </tr>
-                <!-- Добавьте больше строк по аналогии -->
+                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
 
         <!-- Таблица команд -->
         <h2>Команды</h2>
+        <button onclick="addTeam()">Добавить команду</button>
         <table id="teams">
             <thead>
                 <tr>
@@ -47,12 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text" placeholder="Капитан"></td>
-                    <td><input type="text" placeholder="Игрок 1"></td>
-                    <td><input type="text" placeholder="Замена 1"></td>
-                </tr>
-                <!-- Добавьте больше строк по аналогии -->
+                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
 
@@ -62,13 +50,15 @@
             <!-- Пример сетки -->
             <div class="round">
                 <div class="match">
-                    <input type="text" placeholder="Команда 1"> vs <input type="text" placeholder="Команда 2">
+                    <div class="team-cell"><input type="text" placeholder="Команда 1"></div>
+                    <div class="team-cell"><input type="text" placeholder="Команда 2"></div>
                 </div>
                 <!-- Добавьте больше матчей -->
             </div>
             <div class="round">
                 <div class="match">
-                    <input type="text" placeholder="Победитель 1"> vs <input type="text" placeholder="Победитель 2">
+                    <div class="team-cell"><input type="text" placeholder="Победитель 1"></div>
+                    <div class="team-cell"><input type="text" placeholder="Победитель 2"></div>
                 </div>
             </div>
         </div>
@@ -83,11 +73,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="text" placeholder="Команда 1 vs Команда 2"></td>
-                    <td><input type="text" placeholder="Результат"></td>
-                </tr>
-                <!-- Добавьте больше строк по аналогии -->
+                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
 
@@ -100,14 +86,23 @@
                     <th>Ban</th>
                     <th>Ban</th>
                     <th>Decider</th>
+                    <th>Decider</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><button class="ban">Ban</button></td>
-                    <td><button class="ban">Ban</button></td>
-                    <td><button class="ban">Ban</button></td>
-                    <td><button class="decider">Decider</button></td>
+                    <td><button class="map-button" data-map="mirage">Mirage</button></td>
+                    <td><button class="map-button" data-map="dust2">Dust 2</button></td>
+                    <td><button class="map-button" data-map="inferno">Inferno</button></td>
+                    <td><button class="map-button" data-map="nuke">Nuke</button></td>
+                    <td><button class="map-button" data-map="anubis">Anubis</button></td>
+                </tr>
+                <tr>
+                    <td><button class="map-button" data-map="ancient">Ancient</button></td>
+                    <td><button class="map-button" data-map="train">Train</button></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
