@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +10,9 @@
     <div class="container">
         <h1>Турнир "За ящик пива"</h1>
 
-        <!-- Участники -->
+        <!-- Таблица участников -->
         <h2>Участники</h2>
+        <button onclick="addParticipant()">+</button>
         <table id="participants">
             <thead>
                 <tr>
@@ -19,105 +20,60 @@
                     <th>Faceit lvl</th>
                     <th>Premier elo</th>
                     <th>Личная оценка игры</th>
-                    <th>Взнос</th>
-                    <th>Действия</th>
+                    <th>Взнос <input type="checkbox"></th>
+                    <th>Удалить</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
-        <button onclick="addParticipant()">+</button>
 
-        <!-- Команды -->
+        <!-- Таблица команд -->
         <h2>Команды</h2>
+        <button onclick="addTeam()">+</button>
         <table id="teams">
             <thead>
                 <tr>
                     <th>Капитан</th>
-                    <th>Игрок 1</th>
-                    <th>Игрок 2</th>
-                    <th>Игрок 3</th>
-                    <th>Игрок 4</th>
-                    <th>Замена 1</th>
-                    <th>Замена 2</th>
-                    <th>Замена 3</th>
-                    <th>Действия</th>
+                    <th>Игроки</th>
+                    <th>Замены</th>
+                    <th>Удалить</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
-        <button onclick="addTeam()">+</button>
 
         <!-- Турнирная сетка -->
         <h2>Турнирная сетка</h2>
         <div id="bracket">
-            <div class="round">
-                <div class="match">
-                    <input type="text" placeholder="Команда 1">
-                    <span>vs</span>
-                    <input type="text" placeholder="Команда 2">
-                </div>
-                <div class="match">
-                    <input type="text" placeholder="Команда 3">
-                    <span>vs</span>
-                    <input type="text" placeholder="Команда 4">
-                </div>
-            </div>
-            <div class="round">
-                <div class="match">
-                    <span>Победитель матча 1</span>
-                    <span>vs</span>
-                    <span>Победитель матча 2</span>
-                </div>
-            </div>
-            <div class="round">
-                <div class="match">
-                    <span>Проигравший матч 1</span>
-                    <span>vs</span>
-                    <span>Проигравший матч 2</span>
-                </div>
-            </div>
+            <!-- Сетка будет строиться динамически -->
         </div>
 
-        <!-- Результаты матчей -->
+        <!-- Таблица результатов -->
         <h2>Результаты матчей</h2>
         <table id="results">
             <thead>
                 <tr>
-                    <th>Команда 1</th>
-                    <th>Счет</th>
-                    <th>Команда 2</th>
-                    <th>Действия</th>
+                    <th>Матч</th>
+                    <th>Результат</th>
+                    <th>Удалить</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Строки будут добавляться динамически -->
             </tbody>
         </table>
 
-        <!-- Пики карт -->
+        <!-- Таблица пиков карт -->
         <h2>Пики карт</h2>
-        <table id="mapPicks">
-            <thead>
-                <tr>
-                    <th>Ban</th>
-                    <th>Ban</th>
-                    <th>Ban</th>
-                    <th>Decider</th>
-                    <th>Decider</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><button class="map-button">Mirage</button></td>
-                    <td><button class="map-button">Dust 2</button></td>
-                    <td><button class="map-button">Inferno</button></td>
-                    <td><button class="map-button">Nuke</button></td>
-                    <td><button class="map-button">Anubis</button></td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="map-picks-container">
+            <!-- Пики карт будут добавляться динамически -->
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
