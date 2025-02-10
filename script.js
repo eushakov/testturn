@@ -1,75 +1,47 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const participantsTable = document.querySelector('#participants tbody');
+    const teamsTable = document.querySelector('#teams tbody');
+    const bracket = document.getElementById('bracket');
+    const resultsTable = document.querySelector('#results tbody');
+    const mapPicksContainer = document.getElementById('map-picks-container');
+
+    let matches = []; // Хранение матчей для сетки
+    let mapPicks = []; // Хранение пиков карт
+
     // Добавление участника
     function addParticipant() {
-        const table = document.querySelector('#participants tbody');
-        const row = table.insertRow();
+        const row = participantsTable.insertRow();
         row.innerHTML = `
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="checkbox"></td>
-            <td><button onclick="removeRow(this)">-</button></td>
+            <td><input type="text" placeholder="Ник"></td>
+            <td><input type="number" placeholder="Уровень"></td>
+            <td><input type="number" placeholder="ELO"></td>
+            <td><input type="number" placeholder="Оценка"></td>
+            <td><input type="text" placeholder="Взнос"> <input type="checkbox"></td>
+            <td><button class="delete-button" onclick="deleteRow(this)">Удалить</button></td>
         `;
     }
 
     // Добавление команды
     function addTeam() {
-        const table = document.querySelector('#teams tbody');
-        const row = table.insertRow();
+        const row = teamsTable.insertRow();
         row.innerHTML = `
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><button onclick="removeRow(this)">-</button></td>
+            <td><input type="text" placeholder="Капитан"></td>
+            <td><input type="text" placeholder="Игрок 1"></td>
+            <td><input type="text" placeholder="Замена 1"></td>
+            <td><button class="delete-button" onclick="deleteRow(this)">Удалить</button></td>
         `;
     }
 
     // Удаление строки
-    function removeRow(button) {
-        button.closest('tr').remove();
+    function deleteRow(button) {
+        const row = button.closest('tr');
+        row.remove();
     }
 
-    // Логика для пиков карт
-    const mapButtons = document.querySelectorAll('.map-button');
-    let banCount = 0;
-    let deciderCount = 0;
+    // Построение турнирной сетки
+    function buildBracket() {
+        bracket.innerHTML = ''; // Очистка сетки
+        matches = []; // Очистка матчей
 
-    mapButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (banCount < 3 && !button.classList.contains('decider')) {
-                button.classList.add('banned');
-                banCount++;
-            } else if (deciderCount < 2 && !button.classList.contains('banned')) {
-                button.classList.add('decider');
-                deciderCount++;
-            }
-        });
-    });
-
-    // Обновление результатов матчей
-    const bracketMatches = document.querySelectorAll('.match');
-    const resultsTable = document.querySelector('#results tbody');
-
-    bracketMatches.forEach(match => {
-        match.addEventListener('click', () => {
-            const team1 = match.querySelector('input:nth-child(1)').value || match.querySelector('span:nth-child(1)').textContent;
-            const team2 = match.querySelector('input:nth-child(3)').value || match.querySelector('span:nth-child(3)').textContent;
-
-            if (team1 && team2) {
-                const row = resultsTable.insertRow();
-                row.innerHTML = `
-                    <td>${team1}</td>
-                    <td><input type="text" placeholder="Счет"></td>
-                    <td>${team2}</td>
-                    <td><button onclick="removeRow(this)">-</button></td>
-                `;
-            }
-        });
-    });
-});
+        // Пример для 4 команд
+        const teams
