@@ -139,19 +139,26 @@ document.addEventListener('DOMContentLoaded', function () {
         bracket.innerHTML = '';
         data.forEach((round, roundIndex) => {
             const roundContainer = document.createElement('div');
-            roundContainer.className = 'round';
+            roundContainer.className = `tournament__round tournament__round--round-${roundIndex + 1}`;
+            if (data.length - 1 === roundIndex) {
+                roundContainer.className += ' tournament__round--final';
+            }
+            if (data.length === roundIndex + 1) {
+                roundContainer.className += ' tournament__round--winner';
+            }
+
             round.forEach((match, matchIndex) => {
                 const matchContainer = document.createElement('div');
-                matchContainer.className = 'match';
+                matchContainer.className = 'tournament__match';
 
-                const team1 = document.createElement('div');
-                team1.className = 'team';
+                const team1 = document.createElement('a');
+                team1.className = 'tournament__match__team';
                 team1.textContent = match.team || 'Пусто';
                 team1.dataset.team = match.team;
                 team1.addEventListener('click', () => handleMatchClick(roundIndex, matchIndex, 'team'));
 
-                const team2 = document.createElement('div');
-                team2.className = 'team';
+                const team2 = document.createElement('a');
+                team2.className = 'tournament__match__team';
                 team2.textContent = match.opponent || 'Пусто';
                 team2.dataset.team = match.opponent;
                 team2.addEventListener('click', () => handleMatchClick(roundIndex, matchIndex, 'opponent'));
@@ -161,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 roundContainer.appendChild(matchContainer);
             });
+
             bracket.appendChild(roundContainer);
         });
     }
