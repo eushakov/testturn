@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const inputs = newRow.querySelectorAll('input');
         inputs.forEach((input, index) => {
             input.addEventListener('input', function () {
-                if (index === 1 && input.value.trim() !== '') {
+                if (index === 0 && input.value.trim() !== '') {
                     input.parentElement.classList.add('filled-green');
-                } else if (index === 1) {
+                } else if (index === 0) {
                     input.parentElement.classList.remove('filled-green');
                 }
                 if ((index === 6 || index === 7) && input.value.trim() !== '') {
