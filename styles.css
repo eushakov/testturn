@@ -2,11 +2,8 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #f4f4f4;
-}
-
-h2 {
-    text-align: center;
+    background-color: #383738;
+    color: #fff;
 }
 
 .container {
@@ -17,7 +14,7 @@ h2 {
 
 .table-container {
     width: 48%;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 10px;
     box-sizing: border-box;
 }
@@ -29,19 +26,22 @@ table {
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 8px;
     text-align: left;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 input[type="text"], input[type="number"] {
     width: 100%;
     padding: 5px;
     box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
 }
 
 button {
@@ -50,6 +50,14 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .delete-button {
@@ -65,24 +73,13 @@ button {
     background-color: #cc0000;
 }
 
-/* Цветовые стили для таблицы составов команд */
-.filled-green {
-    background-color: #90ee90; /* Зеленый */
-}
-
-.filled-yellow {
-    background-color: #ffff99; /* Желтый */
-}
-
 /* Стили для турнирной сетки */
 .tournament {
     position: relative;
     min-height: 300px;
     padding: 30px 0 0;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow-x: auto;
+    background-color: #383738;
+    color: #fff;
 }
 
 .tournament__grid {
@@ -115,10 +112,10 @@ button {
     font-size: 14px;
     font-weight: bold;
     transition: color 0.3s ease;
-    color: #333;
+    color: #ccc;
     text-decoration: none;
     box-sizing: border-box;
-    background: #f9f9f9;
+    background: rgba(255, 255, 255, 0.1);
     display: block;
     position: relative;
     width: auto;
@@ -127,13 +124,13 @@ button {
     padding: 0 36px;
     margin: auto;
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
 }
 
 .tournament__match__team:hover {
-    background: #e0e0e0;
-    color: #000;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
 
 .tournament__match__team:before,
@@ -144,7 +141,7 @@ button {
     width: 999px;
     height: 2px;
     margin-top: -1px;
-    background: #ddd;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .tournament__match__team:after {
@@ -160,7 +157,7 @@ button {
     position: absolute;
     right: 0;
     width: 2px;
-    background: #ddd;
+    background: rgba(255, 255, 255, 0.2);
     top: 25%;
     bottom: 25%;
 }
