@@ -3,27 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список участников</title>
+    <title>Участники и составы команд</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Список участников</h1>
-    <table id="participantsTable">
-        <thead>
-            <tr>
-                <th>Никнейм ТГ</th>
-                <th>Faceit lvl</th>
-                <th>Premier lvl</th>
-                <th>Личная оценка игры</th>
-                <th>Взнос</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Строки будут добавляться сюда -->
-        </tbody>
-    </table>
-    <button id="addRowButton">+</button>
+    <div class="container">
+        <!-- Таблица участников -->
+        <div class="table-container">
+            <h2>Список участников</h2>
+            <table id="participantsTable">
+                <thead>
+                    <tr>
+                        <th>Никнейм ТГ</th>
+                        <th>Faceit lvl</th>
+                        <th>Premier lvl</th>
+                        <th>Личная оценка игры</th>
+                        <th>Взнос</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Строки будут добавляться сюда -->
+                </tbody>
+            </table>
+            <button id="addParticipantButton">+</button>
+        </div>
+
+        <!-- Таблица составов команд -->
+        <div class="table-container">
+            <h2>Составы команд</h2>
+            <table id="teamsTable">
+                <thead>
+                    <tr>
+                        <th>Команда</th>
+                        <th>Игрок 1</th>
+                        <th>Игрок 2</th>
+                        <th>Игрок 3</th>
+                        <th>Игрок 4</th>
+                        <th>Игрок 5</th>
+                        <th>Запасной</th>
+                        <th>Запасной</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Строки будут добавляться сюда -->
+                </tbody>
+            </table>
+            <button id="addTeamButton">+</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
