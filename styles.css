@@ -102,6 +102,10 @@ button {
     background-color: #d4edda; /* Зеленый для победителя */
 }
 
+.match.loser {
+    background-color: #f8d7da; /* Красный для проигравшего */
+}
+
 .match.empty {
     background-color: #f8d7da; /* Красный для пустых ячеек */
 }
