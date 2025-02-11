@@ -1,7 +1,80 @@
+/* Общие стили */
 body {
     background: #383738;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
+.container {
+    display: flex;
+    gap: 20px;
+    margin: 20px;
+}
+
+.table-container {
+    width: 48%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+th, td {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
+}
+
+/* Стили для турнирной сетки */
 .tournament {
     position: relative;
     min-height: 300px;
@@ -32,29 +105,6 @@ body {
     flex: 1 0;
     align-items: center;
     min-height: 100px;
-    &:first-child {
-        margin: 0 !important;
-    }
-    .tournament__round--first-round & {
-        padding-left: 0;
-    }
-    .tournament__round--winner & {
-        padding-right: 0;
-        height: 32px;
-    }
-    &:after {
-        content: '';
-        position: absolute;
-        right: 0;
-        width: 2px;
-        background: rgba(0, 0, 0, 0.2);
-        top: 25%;
-        bottom: 25%;
-        .tournament__round--winner &,
-        .tournament__round--end-point & {
-            display: none;
-        }
-    }
 }
 
 .tournament__match__team {
@@ -72,30 +122,51 @@ body {
     line-height: 32px;
     padding: 0 36px;
     margin: auto;
-    &:before,
-    &:after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        width: 999px;
-        height: 2px;
-        margin-top: -1px;
-        background: rgba(0, 0, 0, 0.2);
-    }
-    &:after {
-        left: 100%;
-        .tournament__round:last-child &,
-        .tournament__round--end-point & {
-            display: none;
-        }
-    }
-    &:before {
-        right: 100%;
-        .tournament__round:first-child & {
-            display: none;
-        }
-    }
-    &:hover {
-        color: #fff;
-    }
+    text-align: center;
+}
+
+.tournament__match__team:hover {
+    color: #fff;
+}
+
+.tournament__match__team:before,
+.tournament__match__team:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 999px;
+    height: 2px;
+    margin-top: -1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tournament__match__team:after {
+    left: 100%;
+}
+
+.tournament__match__team:before {
+    right: 100%;
+}
+
+.tournament__match:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    top: 25%;
+    bottom: 25%;
+}
+
+.tournament__round--winner .tournament__match:after,
+.tournament__round--end-point .tournament__match:after {
+    display: none;
+}
+
+.winner-block {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #f8d7da;
 }
