@@ -1,24 +1,24 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Добавляем обработчик события на кнопку
-    document.getElementById('addRowButton').addEventListener('click', function() {
-        // Получаем таблицу и тело таблицы
-        const table = document.getElementById('participantsTable').getElementsByTagName('tbody')[0];
+// Ожидаем загрузки DOM
+document.addEventListener('DOMContentLoaded', function () {
+    // Находим кнопку и добавляем обработчик события
+    const addButton = document.getElementById('addRowButton');
+    addButton.addEventListener('click', function () {
+        // Находим тело таблицы
+        const tableBody = document.querySelector('#participantsTable tbody');
 
         // Создаем новую строку
-        const newRow = table.insertRow();
+        const newRow = document.createElement('tr');
 
-        // Добавляем ячейки в строку
-        const cell1 = newRow.insertCell(0);
-        const cell2 = newRow.insertCell(1);
-        const cell3 = newRow.insertCell(2);
-        const cell4 = newRow.insertCell(3);
-        const cell5 = newRow.insertCell(4);
+        // Добавляем ячейки с полями ввода
+        newRow.innerHTML = `
+            <td><input type="text" placeholder="Никнейм ТГ"></td>
+            <td><input type="number" placeholder="Faceit lvl"></td>
+            <td><input type="number" placeholder="Premier lvl"></td>
+            <td><input type="number" placeholder="Оценка игры"></td>
+            <td><input type="checkbox"></td>
+        `;
 
-        // Добавляем поля ввода в ячейки
-        cell1.innerHTML = '<input type="text" placeholder="Никнейм ТГ">';
-        cell2.innerHTML = '<input type="number" placeholder="Faceit lvl">';
-        cell3.innerHTML = '<input type="number" placeholder="Premier lvl">';
-        cell4.innerHTML = '<input type="number" placeholder="Оценка игры">';
-        cell5.innerHTML = '<input type="checkbox">';
+        // Добавляем строку в таблицу
+        tableBody.appendChild(newRow);
     });
 });
