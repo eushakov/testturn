@@ -95,6 +95,7 @@ button {
     min-width: 150px;
     text-align: center;
     background-color: #f9f9f9;
+    cursor: pointer;
 }
 
 .match.winner {
@@ -103,4 +104,16 @@ button {
 
 .match.empty {
     background-color: #f8d7da; /* Красный для пустых ячеек */
+}
+
+.winner-block {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.winner-block .trophy {
+    font-size: 32px;
+    margin-left: 10px;
 }
