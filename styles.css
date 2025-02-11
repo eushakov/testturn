@@ -36,3 +36,16 @@ input[type="text"], input[type="number"] {
     padding: 5px;
     box-sizing: border-box;
 }
+
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
+}
