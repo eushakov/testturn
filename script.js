@@ -136,21 +136,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderBracket(data) {
         bracket.innerHTML = '';
         const round = document.createElement('div');
-        round.className = 'tournament__round tournament__round--first-round';
+        round.className = 'tournament__round';
 
         data.forEach((match, index) => {
             const matchElement = document.createElement('div');
             matchElement.className = 'tournament__match';
 
-            const team1Element = document.createElement('a');
-            team1Element.className = 'tournament__match__team';
+            const team1Element = document.createElement('div');
+            team1Element.className = 'tournament__team';
             team1Element.textContent = match.team1 || '';
-            team1Element.href = '#';
 
-            const team2Element = document.createElement('a');
-            team2Element.className = 'tournament__match__team';
+            const team2Element = document.createElement('div');
+            team2Element.className = 'tournament__team';
             team2Element.textContent = match.team2 || '';
-            team2Element.href = '#';
 
             // Обработчик выбора победителя
             team1Element.addEventListener('click', function () {
