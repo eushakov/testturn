@@ -3,14 +3,26 @@ body {
     margin: 20px;
 }
 
-h1 {
+h2 {
     text-align: center;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.table-container {
+    width: 48%;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 th, td {
@@ -23,18 +35,18 @@ th {
     background-color: #f2f2f2;
 }
 
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
 button {
     display: block;
     margin: 0 auto;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-}
-
-input[type="text"], input[type="number"] {
-    width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
 }
 
 .delete-button {
@@ -48,4 +60,13 @@ input[type="text"], input[type="number"] {
 
 .delete-button:hover {
     background-color: #cc0000;
+}
+
+/* Цветовые стили для таблицы составов команд */
+.filled-green {
+    background-color: #90ee90; /* Зеленый */
+}
+
+.filled-yellow {
+    background-color: #ffff99; /* Желтый */
 }
