@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Получаем ссылки на элементы
     const participantsTableBody = document.querySelector('#participantsTable tbody');
     const teamsTableBody = document.querySelector('#teamsTable tbody');
     const addParticipantButton = document.getElementById('addParticipantButton');
