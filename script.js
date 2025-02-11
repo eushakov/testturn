@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const generateBracketButton = document.getElementById('generateBracketButton');
     const bracket = document.getElementById('bracket');
     const winnerBlock = document.getElementById('winnerBlock');
+
     let bracketData = JSON.parse(localStorage.getItem('bracketData')) || null;
 
     // Загрузка данных из localStorage
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Генерация турнирной сетки
     generateBracketButton.addEventListener('click', function () {
-        if (bracketData && bracketData.some(match => match.winner)) {
+        if (bracketData && bracketData.some(round => round.some(match => match.winner))) {
             alert('Нельзя перемешать пары, пока есть выбранные победители!');
             return;
         }
@@ -43,8 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Для генерации сетки нужно минимум 2 команды!');
             return;
         }
-        teams.sort(() => Math.random() - 0.5);
-        bracketData = generateInitialBracket(teams);
+        bracketData = generateOlympicBracket(teams);
         renderBracket(bracketData);
         saveTableData();
     });
@@ -106,76 +106,101 @@ document.addEventListener('DOMContentLoaded', function () {
         teamsTableBody.appendChild(newRow);
     }
 
-    // Функция для генерации начальной сетки
-    function generateInitialBracket(teams) {
-        const matches = [];
-        for (let i = 0; i < teams.length; i += 2) {
-            const team1 = teams[i];
-            const team2 = teams[i + 1] || null;
-            matches.push({
-                team1,
-                team2,
-                winner: null,
-                loser: null
-            });
-        }
-        return matches;
-    }
+    // Генерация олимпийской сетки
+    function generateOlympicBracket(teams) {
+        const totalRounds = Math.ceil(Math.log2(teams.length));
+        const initialMatches = [];
 
-    // Функция для отрисовки сетки
-    function renderBracket(data, roundIndex = 0) {
-        const round = document.createElement('div');
-        round.className = 'round';
-        data.forEach((match, index) => {
-            const matchElement = document.createElement('div');
-            matchElement.className = 'match';
-            if (match.winner) {
-                matchElement.classList.add('winner');
-            } else if (match.loser) {
-                matchElement.classList.add('loser');
+        for (let i = 0; i < teams.length; i++) {
+            initialMatches.push({ team: teams[i], opponent: null, winner: null });
+        }
+
+        const bracket = [initialMatches];
+
+        for (let round = 1; round < totalRounds; round++) {
+            const prevRound = bracket[round - 1];
+            const nextRound = [];
+
+            for (let i = 0; i < prevRound.length; i += 2) {
+                const match = { team: null, opponent: null, winner: null };
+                if (prevRound[i]) match.team = prevRound[i].team;
+                if (prevRound[i + 1]) match.opponent = prevRound[i + 1].team;
+                nextRound.push(match);
             }
-            matchElement.innerHTML = `
-                <div>${match.team1 || ''}</div>
-                <div>${match.team2 || ''}</div>
-            `;
-            matchElement.addEventListener('click', function () {
-                if (!match.team1 && !match.team2) return;
-                if (match.winner === match.team1) {
-                    match.winner = match.team2;
-                    match.loser = match.team1;
-                } else if (match.winner === match.team2) {
-                    match.winner = null;
-                    match.loser = null;
-                } else {
-                    match.winner = match.team1 || match.team2;
-                    match.loser = match.team2 || match.team1;
-                }
-                renderBracket(data, roundIndex);
-                saveTableData();
-                updateNextRound(data, roundIndex);
-            });
-            round.appendChild(matchElement);
-        });
-        bracket.appendChild(round);
-        updateWinner(data);
+
+            bracket.push(nextRound);
+        }
+
+        return bracket;
     }
 
-    // Функция для обновления блока победителя
-    function updateWinner(data) {
-        const winner = data.find(match => match.winner)?.winner;
-        if (winner) {
-            winnerBlock.innerHTML = `Победитель: ${winner} <span class="trophy">🏆</span>`;
-        } else {
-            winnerBlock.innerHTML = '';
-        }
+    // Отрисовка сетки
+    function renderBracket(data) {
+        bracket.innerHTML = '';
+        data.forEach((round, roundIndex) => {
+            const roundContainer = document.createElement('div');
+            roundContainer.className = 'round';
+            round.forEach((match, matchIndex) => {
+                const matchContainer = document.createElement('div');
+                matchContainer.className = 'match';
+
+                const team1 = document.createElement('div');
+                team1.className = 'team';
+                team1.textContent = match.team || 'Пусто';
+                team1.dataset.team = match.team;
+                team1.addEventListener('click', () => handleMatchClick(roundIndex, matchIndex, 'team'));
+
+                const team2 = document.createElement('div');
+                team2.className = 'team';
+                team2.textContent = match.opponent || 'Пусто';
+                team2.dataset.team = match.opponent;
+                team2.addEventListener('click', () => handleMatchClick(roundIndex, matchIndex, 'opponent'));
+
+                matchContainer.appendChild(team1);
+                matchContainer.appendChild(team2);
+
+                roundContainer.appendChild(matchContainer);
+            });
+            bracket.appendChild(roundContainer);
+        });
+    }
+
+    // Обработка выбора победителя
+    function handleMatchClick(roundIndex, matchIndex, teamType) {
+        const currentRound = bracketData[roundIndex];
+        const match = currentRound[matchIndex];
+
+        if (!match) return;
+
+        const selectedTeam = teamType === 'team' ? match.team : match.opponent;
+
+        if (!selectedTeam) return;
+
+        // Установка победителя
+        match.winner = selectedTeam;
+        match.loser = teamType === 'team' ? match.opponent : match.team;
+
+        // Обновление следующего раунда
+        updateNextRound(roundIndex, matchIndex, selectedTeam);
+
+        renderBracket(bracketData);
+        saveTableData();
     }
 
     // Обновление следующего раунда
-    function updateNextRound(data, roundIndex) {
-        const winners = data.filter(match => match.winner).map(match => match.winner);
-        if (winners.length > 1) {
-            const nextRound = generateInitialBracket(winners);
-            renderBracket(nextRound, roundIndex + 1);
+    function updateNextRound(roundIndex, matchIndex, winner) {
+        const nextRound = bracketData[roundIndex + 1];
+        if (!nextRound) return;
+
+        const nextMatchIndex = Math.floor(matchIndex / 2);
+        const nextMatch = nextRound[nextMatchIndex];
+
+        if (!nextMatch) return;
+
+        if (matchIndex % 2 === 0) {
+            nextMatch.team = winner;
+        } else {
+            nextMatch.opponent = winner;
         }
     }
 
