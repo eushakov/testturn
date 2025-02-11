@@ -1,4 +1,6 @@
 body {
+    background: #383738;
+    color: #ccc;
     font-family: Arial, sans-serif;
     margin: 20px;
 }
@@ -73,51 +75,78 @@ button {
 }
 
 /* Стили для турнирной сетки */
-.bracket-container {
-    width: 100%;
-    overflow-x: auto;
+.tournament {
+    position: relative;
+    min-height: 300px;
+    padding: 30px 0 0;
 }
 
-#bracket {
+.tournament__grid {
+    font-size: 0;
+    line-height: 0;
     display: flex;
-    gap: 20px;
+    align-items: stretch;
+    min-height: 400px;
 }
 
-.round {
+.tournament__round {
+    position: relative;
+    flex: 1 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
-.match {
-    border: 2px solid #000;
-    padding: 10px;
-    min-width: 150px;
-    text-align: center;
-    background-color: #f9f9f9;
-    cursor: pointer;
+.tournament__match {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+    align-items: center;
+    min-height: 100px;
 }
 
-.match.winner {
+.tournament__match__team {
+    font-size: 14px;
+    font-weight: bold;
+    transition: color .3s ease;
+    color: #ccc;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.2);
+    display: block;
+    position: relative;
+    width: auto;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 36px 0 36px;
+    margin: auto;
+}
+
+.tournament__match__team:before,
+.tournament__match__team:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 999px;
+    height: 2px;
+    margin-top: -1px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.tournament__match__team:after {
+    left: 100%;
+}
+
+.tournament__match__team:before {
+    right: 100%;
+}
+
+.tournament__match__team.winner {
     background-color: #d4edda; /* Зеленый для победителя */
 }
 
-.match.loser {
+.tournament__match__team.loser {
     background-color: #f8d7da; /* Красный для проигравшего */
-}
-
-.match.empty {
-    background-color: #f8d7da; /* Красный для пустых ячеек */
-}
-
-.winner-block {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.winner-block .trophy {
-    font-size: 32px;
-    margin-left: 10px;
 }
