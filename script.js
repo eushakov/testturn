@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const teamsTableBody = document.querySelector('#teamsTable tbody');
     const addParticipantButton = document.getElementById('addParticipantButton');
     const addTeamButton = document.getElementById('addTeamButton');
+    const bracket = document.getElementById('bracket');
 
     // Загрузка данных из localStorage
     loadTableData();
+    updateBracket();
 
     // Добавление строки в таблицу участников
     addParticipantButton.addEventListener('click', function () {
@@ -81,9 +83,69 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.addEventListener('click', function () {
             teamsTableBody.removeChild(newRow);
             saveTableData();
+            updateBracket(); // Обновляем сетку при удалении команды
         });
 
         teamsTableBody.appendChild(newRow);
+        updateBracket(); // Обновляем сетку при добавлении команды
+    }
+
+    // Функция для обновления турнирной сетки
+    function updateBracket() {
+        const teams = [];
+        teamsTableBody.querySelectorAll('tr').forEach(row => {
+            const teamName = row.querySelector('input[type="text"]').value;
+            if (teamName.trim() !== '') {
+                teams.push(teamName);
+            }
+        });
+
+        bracket.innerHTML = ''; // Очищаем сетку
+        if (teams.length === 0) return;
+
+        // Случайное перемешивание команд
+        teams.sort(() => Math.random() - 0.5);
+
+        // Создание сетки
+        let roundCount = Math.ceil(Math.log2(teams.length));
+        let matches = teams.map(team => ({ team, winner: false }));
+
+        for (let i = 0; i < roundCount; i++) {
+            const round = document.createElement('div');
+            round.className = 'round';
+
+            for (let j = 0; j < matches.length; j += 2) {
+                const match = document.createElement('div');
+                match.className = 'match';
+
+                const team1 = matches[j] ? matches[j].team : '';
+                const team2 = matches[j + 1] ? matches[j + 1].team : '';
+
+                match.innerHTML = `
+                    <div>${team1}</div>
+                    <div>${team2}</div>
+                    <button class="select-winner" data-index="${j}">Выбрать победителя</button>
+                `;
+
+                if (!team1 || !team2) {
+                    match.classList.add('empty');
+                }
+
+                // Обработчик выбора победителя
+                const winnerButton = match.querySelector('.select-winner');
+                winnerButton.addEventListener('click', function () {
+                    const winnerIndex = parseInt(this.getAttribute('data-index'));
+                    matches[winnerIndex].winner = true;
+                    updateBracket(); // Обновляем сетку
+                    saveTableData();
+                });
+
+                round.appendChild(match);
+            }
+
+            bracket.appendChild(round);
+            matches = matches.filter((match, index) => index % 2 === 0 && match.winner);
+        }
     }
 
     // Сохранение данных в localStorage
