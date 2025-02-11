@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const addTeamButton = document.getElementById('addTeamButton');
     const generateBracketButton = document.getElementById('generateBracketButton');
     const bracket = document.getElementById('bracket');
-    const winnerBlock = document.getElementById('winnerBlock');
 
     let bracketData = JSON.parse(localStorage.getItem('bracketData')) || null;
 
@@ -137,52 +136,63 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderBracket(data) {
         bracket.innerHTML = '';
         const round = document.createElement('div');
-        round.className = 'round';
+        round.className = 'tournament__round tournament__round--first-round';
 
         data.forEach((match, index) => {
             const matchElement = document.createElement('div');
-            matchElement.className = 'match';
-            if (match.winner) {
-                matchElement.classList.add('winner');
-            }
+            matchElement.className = 'tournament__match';
 
-            matchElement.innerHTML = `
-                <div>${match.team1 || ''}</div>
-                <div>${match.team2 || ''}</div>
-            `;
+            const team1Element = document.createElement('a');
+            team1Element.className = 'tournament__match__team';
+            team1Element.textContent = match.team1 || '';
+            team1Element.href = '#';
+
+            const team2Element = document.createElement('a');
+            team2Element.className = 'tournament__match__team';
+            team2Element.textContent = match.team2 || '';
+            team2Element.href = '#';
 
             // Обработчик выбора победителя
-            matchElement.addEventListener('click', function () {
-                if (!match.team1 && !match.team2) return;
+            team1Element.addEventListener('click', function () {
+                if (!match.team1) return;
 
                 if (match.winner === match.team1) {
-                    match.winner = match.team2;
-                } else if (match.winner === match.team2) {
                     match.winner = null;
                 } else {
-                    match.winner = match.team1 || match.team2;
+                    match.winner = match.team1;
                 }
 
                 renderBracket(data);
                 saveTableData();
-                updateWinner(data);
             });
 
+            team2Element.addEventListener('click', function () {
+                if (!match.team2) return;
+
+                if (match.winner === match.team2) {
+                    match.winner = null;
+                } else {
+                    match.winner = match.team2;
+                }
+
+                renderBracket(data);
+                saveTableData();
+            });
+
+            if (match.winner === match.team1) {
+                team1Element.classList.add('winner');
+                team2Element.classList.add('loser');
+            } else if (match.winner === match.team2) {
+                team2Element.classList.add('winner');
+                team1Element.classList.add('loser');
+            }
+
+            matchElement.appendChild(team1Element);
+            matchElement.appendChild(team2Element);
             round.appendChild(matchElement);
         });
 
         bracket.appendChild(round);
-        updateWinner(data);
-    }
-
-    // Функция для обновления блока победителя
-    function updateWinner(data) {
-        const winner = data.find(match => match.winner)?.winner;
-        if (winner) {
-            winnerBlock.innerHTML = `Победитель: ${winner} <span class="trophy">🏆</span>`;
-        } else {
-            winnerBlock.innerHTML = '';
-        }
     }
 
     // Сохранение данных в localStorage
