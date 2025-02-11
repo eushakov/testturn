@@ -1,24 +1,78 @@
-// Ожидаем загрузки DOM
 document.addEventListener('DOMContentLoaded', function () {
-    // Находим кнопку и добавляем обработчик события
+    const tableBody = document.querySelector('#participantsTable tbody');
     const addButton = document.getElementById('addRowButton');
-    addButton.addEventListener('click', function () {
-        // Находим тело таблицы
-        const tableBody = document.querySelector('#participantsTable tbody');
 
-        // Создаем новую строку
+    // Загружаем данные из localStorage при загрузке страницы
+    loadTableData();
+
+    // Добавляем новую строку
+    addButton.addEventListener('click', function () {
+        addRow('', '', '', '', false);
+        saveTableData(); // Сохраняем данные после добавления строки
+    });
+
+    // Функция для добавления строки
+    function addRow(nickname, faceitLevel, premierLevel, rating, isPaid) {
         const newRow = document.createElement('tr');
 
-        // Добавляем ячейки с полями ввода
         newRow.innerHTML = `
-            <td><input type="text" placeholder="Никнейм ТГ"></td>
-            <td><input type="number" placeholder="Faceit lvl"></td>
-            <td><input type="number" placeholder="Premier lvl"></td>
-            <td><input type="number" placeholder="Оценка игры"></td>
-            <td><input type="checkbox"></td>
+            <td><input type="text" value="${nickname}" placeholder="Никнейм ТГ"></td>
+            <td><input type="number" value="${faceitLevel}" placeholder="Faceit lvl"></td>
+            <td><input type="number" value="${premierLevel}" placeholder="Premier lvl"></td>
+            <td><input type="number" value="${rating}" placeholder="Оценка игры"></td>
+            <td><input type="checkbox" ${isPaid ? 'checked' : ''}></td>
+            <td><button class="delete-button">Удалить</button></td>
         `;
 
-        // Добавляем строку в таблицу
+        // Добавляем обработчик удаления строки
+        const deleteButton = newRow.querySelector('.delete-button');
+        deleteButton.addEventListener('click', function () {
+            tableBody.removeChild(newRow);
+            saveTableData(); // Сохраняем данные после удаления строки
+        });
+
         tableBody.appendChild(newRow);
+    }
+
+    // Функция для сохранения данных в localStorage
+    function saveTableData() {
+        const rows = tableBody.querySelectorAll('tr');
+        const data = [];
+
+        rows.forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            data.push({
+                nickname: inputs[0].value,
+                faceitLevel: inputs[1].value,
+                premierLevel: inputs[2].value,
+                rating: inputs[3].value,
+                isPaid: inputs[4].checked
+            });
+        });
+
+        localStorage.setItem('tableData', JSON.stringify(data));
+    }
+
+    // Функция для загрузки данных из localStorage
+    function loadTableData() {
+        const data = JSON.parse(localStorage.getItem('tableData')) || [];
+
+        data.forEach(item => {
+            addRow(item.nickname, item.faceitLevel, item.premierLevel, item.rating, item.isPaid);
+        });
+    }
+
+    // Сохраняем данные при изменении полей ввода
+    tableBody.addEventListener('input', function (event) {
+        if (event.target.tagName === 'INPUT') {
+            saveTableData();
+        }
+    });
+
+    // Сохраняем данные при изменении чекбокса
+    tableBody.addEventListener('change', function (event) {
+        if (event.target.type === 'checkbox') {
+            saveTableData();
+        }
     });
 });
