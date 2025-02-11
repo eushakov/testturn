@@ -1,38 +1,101 @@
-#bracket {
+body {
+    background: #383738;
+}
+
+.tournament {
+    position: relative;
+    min-height: 300px;
+    padding: 30px 0 0;
+}
+
+.tournament__grid {
+    font-size: 0;
+    line-height: 0;
+    display: flex;
+    align-items: stretch;
+    min-height: 400px;
+}
+
+.tournament__round {
+    position: relative;
+    flex: 1 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
-.round {
+.tournament__match {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    flex: 1 0;
+    align-items: center;
+    min-height: 100px;
+    &:first-child {
+        margin: 0 !important;
+    }
+    .tournament__round--first-round & {
+        padding-left: 0;
+    }
+    .tournament__round--winner & {
+        padding-right: 0;
+        height: 32px;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 2px;
+        background: rgba(0, 0, 0, 0.2);
+        top: 25%;
+        bottom: 25%;
+        .tournament__round--winner &,
+        .tournament__round--end-point & {
+            display: none;
+        }
+    }
 }
 
-.match {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.team {
-    border: 2px solid #000;
-    padding: 10px;
-    min-width: 150px;
-    text-align: center;
-    background-color: #f9f9f9;
-    cursor: pointer;
-}
-
-.team.winner {
-    background-color: #d4edda; /* Зеленый */
-}
-
-.team.loser {
-    background-color: #f8d7da; /* Красный */
-}
-
-.team.empty {
-    background-color: #f8f8f8; /* Серый */
+.tournament__match__team {
+    font-size: 14px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    color: #ccc;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.2);
+    display: block;
+    position: relative;
+    width: auto;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 36px;
+    margin: auto;
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 999px;
+        height: 2px;
+        margin-top: -1px;
+        background: rgba(0, 0, 0, 0.2);
+    }
+    &:after {
+        left: 100%;
+        .tournament__round:last-child &,
+        .tournament__round--end-point & {
+            display: none;
+        }
+    }
+    &:before {
+        right: 100%;
+        .tournament__round:first-child & {
+            display: none;
+        }
+    }
+    &:hover {
+        color: #fff;
+    }
 }
