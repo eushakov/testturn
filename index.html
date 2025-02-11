@@ -3,76 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Турнир "За ящик пива"</title>
+    <title>Список участников</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Турнир "За ящик пива"</h1>
-
-        <!-- Таблица участников -->
-        <h2>Участники</h2>
-        <button onclick="addParticipant()">+</button>
-        <table id="participants">
-            <thead>
-                <tr>
-                    <th>Ник ТГ</th>
-                    <th>Faceit lvl</th>
-                    <th>Premier elo</th>
-                    <th>Личная оценка игры</th>
-                    <th>Взнос <input type="checkbox"></th>
-                    <th></th> <!-- Кнопка удаления -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Строки будут добавляться динамически -->
-            </tbody>
-        </table>
-
-        <!-- Таблица команд -->
-        <h2>Команды</h2>
-        <button onclick="addTeam()">+</button>
-        <table id="teams">
-            <thead>
-                <tr>
-                    <th>Капитан</th>
-                    <th>Игроки</th>
-                    <th>Замены</th>
-                    <th></th> <!-- Кнопка удаления -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Строки будут добавляться динамически -->
-            </tbody>
-        </table>
-
-        <!-- Турнирная сетка -->
-        <h2>Турнирная сетка</h2>
-        <div id="bracket">
-            <!-- Сетка будет строиться динамически -->
-        </div>
-
-        <!-- Таблица результатов -->
-        <h2>Результаты матчей</h2>
-        <table id="results">
-            <thead>
-                <tr>
-                    <th>Матч</th>
-                    <th>Результат</th>
-                    <th></th> <!-- Кнопка удаления -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Строки будут добавляться динамически -->
-            </tbody>
-        </table>
-
-        <!-- Таблица пиков карт -->
-        <h2>Пики карт</h2>
-        <div id="map-picks-container">
-            <!-- Пики карт будут добавляться динамически -->
-        </div>
-    </div>
+    <h1>Список участников</h1>
+    <table id="participantsTable">
+        <thead>
+            <tr>
+                <th>Никнейм ТГ</th>
+                <th>Faceit lvl</th>
+                <th>Premier lvl</th>
+                <th>Личная оценка игры</th>
+                <th>Взнос</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Строки будут добавляться сюда -->
+        </tbody>
+    </table>
+    <button id="addRowButton">+</button>
 
     <script src="script.js"></script>
 </body>
