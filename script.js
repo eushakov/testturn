@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const generateBracketButton = document.getElementById('generateBracketButton');
     const bracket = document.getElementById('bracket');
     const winnerBlock = document.getElementById('winnerBlock');
-
     let bracketData = JSON.parse(localStorage.getItem('bracketData')) || null;
 
     // Загрузка данных из localStorage
@@ -29,6 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Генерация турнирной сетки
     generateBracketButton.addEventListener('click', function () {
+        if (bracketData && bracketData.some(match => match.winner)) {
+            alert('Нельзя перемешать пары, пока есть выбранные победители!');
+            return;
+        }
         const teams = [];
         teamsTableBody.querySelectorAll('tr').forEach(row => {
             const teamName = row.querySelector('input[type="text"]').value;
@@ -36,16 +39,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 teams.push(teamName);
             }
         });
-
         if (teams.length < 2) {
             alert('Для генерации сетки нужно минимум 2 команды!');
             return;
         }
-
-        // Случайное перемешивание команд
         teams.sort(() => Math.random() - 0.5);
-
-        // Создание начальной сетки
         bracketData = generateInitialBracket(teams);
         renderBracket(bracketData);
         saveTableData();
@@ -54,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Функция для добавления строки в таблицу участников
     function addParticipantRow(nickname, faceitLevel, premierLevel, rating, isPaid) {
         const newRow = document.createElement('tr');
-
         newRow.innerHTML = `
             <td><input type="text" value="${nickname}" placeholder="Никнейм ТГ"></td>
             <td><input type="number" value="${faceitLevel}" placeholder="Faceit lvl"></td>
@@ -63,20 +60,17 @@ document.addEventListener('DOMContentLoaded', function () {
             <td><input type="checkbox" ${isPaid ? 'checked' : ''}></td>
             <td><button class="delete-button">Удалить</button></td>
         `;
-
         const deleteButton = newRow.querySelector('.delete-button');
         deleteButton.addEventListener('click', function () {
             participantsTableBody.removeChild(newRow);
             saveTableData();
         });
-
         participantsTableBody.appendChild(newRow);
     }
 
     // Функция для добавления строки в таблицу составов команд
     function addTeamRow(team, player1, player2, player3, player4, player5, sub1, sub2) {
         const newRow = document.createElement('tr');
-
         newRow.innerHTML = `
             <td><input type="text" value="${team}" placeholder="Команда"></td>
             <td><input type="text" value="${player1}" placeholder="Игрок 1"></td>
@@ -88,8 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
             <td><input type="text" value="${sub2}" placeholder="Запасной"></td>
             <td><button class="delete-button">Удалить</button></td>
         `;
-
-        // Обработчик для изменения цвета ячеек
         const inputs = newRow.querySelectorAll('input');
         inputs.forEach((input, index) => {
             input.addEventListener('input', function () {
@@ -98,23 +90,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (index === 1) {
                     input.parentElement.classList.remove('filled-green');
                 }
-
                 if ((index === 6 || index === 7) && input.value.trim() !== '') {
                     input.parentElement.classList.add('filled-yellow');
                 } else if (index === 6 || index === 7) {
                     input.parentElement.classList.remove('filled-yellow');
                 }
-
                 saveTableData();
             });
         });
-
         const deleteButton = newRow.querySelector('.delete-button');
         deleteButton.addEventListener('click', function () {
             teamsTableBody.removeChild(newRow);
             saveTableData();
         });
-
         teamsTableBody.appendChild(newRow);
     }
 
@@ -128,49 +116,46 @@ document.addEventListener('DOMContentLoaded', function () {
                 team1,
                 team2,
                 winner: null,
+                loser: null
             });
         }
         return matches;
     }
 
     // Функция для отрисовки сетки
-    function renderBracket(data) {
-        bracket.innerHTML = '';
+    function renderBracket(data, roundIndex = 0) {
         const round = document.createElement('div');
         round.className = 'round';
-
         data.forEach((match, index) => {
             const matchElement = document.createElement('div');
             matchElement.className = 'match';
             if (match.winner) {
                 matchElement.classList.add('winner');
+            } else if (match.loser) {
+                matchElement.classList.add('loser');
             }
-
             matchElement.innerHTML = `
                 <div>${match.team1 || ''}</div>
                 <div>${match.team2 || ''}</div>
             `;
-
-            // Обработчик выбора победителя
             matchElement.addEventListener('click', function () {
                 if (!match.team1 && !match.team2) return;
-
                 if (match.winner === match.team1) {
                     match.winner = match.team2;
+                    match.loser = match.team1;
                 } else if (match.winner === match.team2) {
                     match.winner = null;
+                    match.loser = null;
                 } else {
                     match.winner = match.team1 || match.team2;
+                    match.loser = match.team2 || match.team1;
                 }
-
-                renderBracket(data);
+                renderBracket(data, roundIndex);
                 saveTableData();
-                updateWinner(data);
+                updateNextRound(data, roundIndex);
             });
-
             round.appendChild(matchElement);
         });
-
         bracket.appendChild(round);
         updateWinner(data);
     }
@@ -185,11 +170,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Обновление следующего раунда
+    function updateNextRound(data, roundIndex) {
+        const winners = data.filter(match => match.winner).map(match => match.winner);
+        if (winners.length > 1) {
+            const nextRound = generateInitialBracket(winners);
+            renderBracket(nextRound, roundIndex + 1);
+        }
+    }
+
     // Сохранение данных в localStorage
     function saveTableData() {
         const participantsData = [];
         const teamsData = [];
-
         participantsTableBody.querySelectorAll('tr').forEach(row => {
             const inputs = row.querySelectorAll('input');
             participantsData.push({
@@ -200,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 isPaid: inputs[4].checked
             });
         });
-
         teamsTableBody.querySelectorAll('tr').forEach(row => {
             const inputs = row.querySelectorAll('input');
             teamsData.push({
@@ -214,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 sub2: inputs[7].value
             });
         });
-
         localStorage.setItem('participantsData', JSON.stringify(participantsData));
         localStorage.setItem('teamsData', JSON.stringify(teamsData));
         localStorage.setItem('bracketData', JSON.stringify(bracketData));
@@ -224,11 +215,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function loadTableData() {
         const participantsData = JSON.parse(localStorage.getItem('participantsData')) || [];
         const teamsData = JSON.parse(localStorage.getItem('teamsData')) || [];
-
         participantsData.forEach(item => {
             addParticipantRow(item.nickname, item.faceitLevel, item.premierLevel, item.rating, item.isPaid);
         });
-
         teamsData.forEach(item => {
             addTeamRow(item.team, item.player1, item.player2, item.player3, item.player4, item.player5, item.sub1, item.sub2);
         });
