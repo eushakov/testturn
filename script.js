@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Получаем ссылки на элементы
     const participantsTableBody = document.querySelector('#participantsTable tbody');
     const teamsTableBody = document.querySelector('#teamsTable tbody');
     const addParticipantButton = document.getElementById('addParticipantButton');
@@ -7,11 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const generateBracketButton = document.getElementById('generateBracketButton');
     const bracket = document.getElementById('bracket');
     const winnerBlock = document.getElementById('winnerBlock');
-
-    if (!addParticipantButton || !addTeamButton) {
-        console.error('Кнопки "+" не найдены. Проверьте id в HTML.');
-        return;
-    }
 
     let bracketData = JSON.parse(localStorage.getItem('bracketData')) || null;
 
@@ -23,14 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Добавление строки в таблицу участников
     addParticipantButton.addEventListener('click', function () {
-        console.log('Клик по кнопке "Добавить участника"');
         addParticipantRow('', '', '', '', false);
         saveTableData();
     });
 
     // Добавление строки в таблицу составов команд
     addTeamButton.addEventListener('click', function () {
-        console.log('Клик по кнопке "Добавить команду"');
         addTeamRow('', '', '', '', '', '', '', '');
         saveTableData();
     });
