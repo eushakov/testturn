@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const newRow = document.createElement('tr');
 
         newRow.innerHTML = `
-            <td><input type="text" value="${nickname}" placeholder="Никнейм ТГ"></td>
-            <td><input type="number" value="${faceitLevel}" placeholder="Faceit lvl"></td>
-            <td><input type="number" value="${premierLevel}" placeholder="Premier lvl"></td>
-            <td><input type="number" value="${rating}" placeholder="Оценка игры"></td>
+            <td><input type="text" value="${nickname}" placeholder="Введите никнейм ТГ"></td>
+            <td><input type="number" value="${faceitLevel}" placeholder="Введите faceit lvl"></td>
+            <td><input type="number" value="${premierLevel}" placeholder="Введите premier lvl"></td>
+            <td><input type="number" value="${rating}" placeholder="Укажите уровень вашей игры от 1-10"></td>
             <td><input type="checkbox" ${isPaid ? 'checked' : ''}></td>
             <td><button class="delete-button">Удалить</button></td>
         `;
