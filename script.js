@@ -3,11 +3,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const teamsTableBody = document.querySelector('#teamsTable tbody');
     const addParticipantButton = document.getElementById('addParticipantButton');
     const addTeamButton = document.getElementById('addTeamButton');
+    const generateBracketButton = document.getElementById('generateBracketButton');
     const bracket = document.getElementById('bracket');
+    const winnerBlock = document.getElementById('winnerBlock');
+
+    let bracketData = JSON.parse(localStorage.getItem('bracketData')) || null;
 
     // Загрузка данных из localStorage
     loadTableData();
-    updateBracket();
+    if (bracketData) {
+        renderBracket(bracketData);
+    }
 
     // Добавление строки в таблицу участников
     addParticipantButton.addEventListener('click', function () {
@@ -18,6 +24,30 @@ document.addEventListener('DOMContentLoaded', function () {
     // Добавление строки в таблицу составов команд
     addTeamButton.addEventListener('click', function () {
         addTeamRow('', '', '', '', '', '', '', '');
+        saveTableData();
+    });
+
+    // Генерация турнирной сетки
+    generateBracketButton.addEventListener('click', function () {
+        const teams = [];
+        teamsTableBody.querySelectorAll('tr').forEach(row => {
+            const teamName = row.querySelector('input[type="text"]').value;
+            if (teamName.trim() !== '') {
+                teams.push(teamName);
+            }
+        });
+
+        if (teams.length < 2) {
+            alert('Для генерации сетки нужно минимум 2 команды!');
+            return;
+        }
+
+        // Случайное перемешивание команд
+        teams.sort(() => Math.random() - 0.5);
+
+        // Создание начальной сетки
+        bracketData = generateInitialBracket(teams);
+        renderBracket(bracketData);
         saveTableData();
     });
 
@@ -83,68 +113,75 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.addEventListener('click', function () {
             teamsTableBody.removeChild(newRow);
             saveTableData();
-            updateBracket(); // Обновляем сетку при удалении команды
         });
 
         teamsTableBody.appendChild(newRow);
-        updateBracket(); // Обновляем сетку при добавлении команды
     }
 
-    // Функция для обновления турнирной сетки
-    function updateBracket() {
-        const teams = [];
-        teamsTableBody.querySelectorAll('tr').forEach(row => {
-            const teamName = row.querySelector('input[type="text"]').value;
-            if (teamName.trim() !== '') {
-                teams.push(teamName);
+    // Функция для генерации начальной сетки
+    function generateInitialBracket(teams) {
+        const matches = [];
+        for (let i = 0; i < teams.length; i += 2) {
+            const team1 = teams[i];
+            const team2 = teams[i + 1] || null;
+            matches.push({
+                team1,
+                team2,
+                winner: null,
+            });
+        }
+        return matches;
+    }
+
+    // Функция для отрисовки сетки
+    function renderBracket(data) {
+        bracket.innerHTML = '';
+        const round = document.createElement('div');
+        round.className = 'round';
+
+        data.forEach((match, index) => {
+            const matchElement = document.createElement('div');
+            matchElement.className = 'match';
+            if (match.winner) {
+                matchElement.classList.add('winner');
             }
-        });
 
-        bracket.innerHTML = ''; // Очищаем сетку
-        if (teams.length === 0) return;
+            matchElement.innerHTML = `
+                <div>${match.team1 || ''}</div>
+                <div>${match.team2 || ''}</div>
+            `;
 
-        // Случайное перемешивание команд
-        teams.sort(() => Math.random() - 0.5);
+            // Обработчик выбора победителя
+            matchElement.addEventListener('click', function () {
+                if (!match.team1 && !match.team2) return;
 
-        // Создание сетки
-        let roundCount = Math.ceil(Math.log2(teams.length));
-        let matches = teams.map(team => ({ team, winner: false }));
-
-        for (let i = 0; i < roundCount; i++) {
-            const round = document.createElement('div');
-            round.className = 'round';
-
-            for (let j = 0; j < matches.length; j += 2) {
-                const match = document.createElement('div');
-                match.className = 'match';
-
-                const team1 = matches[j] ? matches[j].team : '';
-                const team2 = matches[j + 1] ? matches[j + 1].team : '';
-
-                match.innerHTML = `
-                    <div>${team1}</div>
-                    <div>${team2}</div>
-                    <button class="select-winner" data-index="${j}">Выбрать победителя</button>
-                `;
-
-                if (!team1 || !team2) {
-                    match.classList.add('empty');
+                if (match.winner === match.team1) {
+                    match.winner = match.team2;
+                } else if (match.winner === match.team2) {
+                    match.winner = null;
+                } else {
+                    match.winner = match.team1 || match.team2;
                 }
 
-                // Обработчик выбора победителя
-                const winnerButton = match.querySelector('.select-winner');
-                winnerButton.addEventListener('click', function () {
-                    const winnerIndex = parseInt(this.getAttribute('data-index'));
-                    matches[winnerIndex].winner = true;
-                    updateBracket(); // Обновляем сетку
-                    saveTableData();
-                });
+                renderBracket(data);
+                saveTableData();
+                updateWinner(data);
+            });
 
-                round.appendChild(match);
-            }
+            round.appendChild(matchElement);
+        });
 
-            bracket.appendChild(round);
-            matches = matches.filter((match, index) => index % 2 === 0 && match.winner);
+        bracket.appendChild(round);
+        updateWinner(data);
+    }
+
+    // Функция для обновления блока победителя
+    function updateWinner(data) {
+        const winner = data.find(match => match.winner)?.winner;
+        if (winner) {
+            winnerBlock.innerHTML = `Победитель: ${winner} <span class="trophy">🏆</span>`;
+        } else {
+            winnerBlock.innerHTML = '';
         }
     }
 
@@ -180,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         localStorage.setItem('participantsData', JSON.stringify(participantsData));
         localStorage.setItem('teamsData', JSON.stringify(teamsData));
+        localStorage.setItem('bracketData', JSON.stringify(bracketData));
     }
 
     // Загрузка данных из localStorage
