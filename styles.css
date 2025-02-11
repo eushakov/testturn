@@ -1,6 +1,6 @@
 body {
-    background: #383738;
-    color: #ccc;
+    background: #f9f9f9;
+    color: #333;
     font-family: Arial, sans-serif;
     margin: 20px;
 }
@@ -82,71 +82,36 @@ button {
 }
 
 .tournament__grid {
-    font-size: 0;
-    line-height: 0;
     display: flex;
+    gap: 20px;
     align-items: stretch;
     min-height: 400px;
 }
 
 .tournament__round {
-    position: relative;
-    flex: 1 0;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 .tournament__match {
-    position: relative;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
-    flex: 1 0;
-    align-items: center;
-    min-height: 100px;
+    gap: 5px;
 }
 
-.tournament__match__team {
-    font-size: 14px;
-    font-weight: bold;
-    transition: color .3s ease;
-    color: #ccc;
-    text-decoration: none;
-    box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.2);
-    display: block;
-    position: relative;
-    width: auto;
-    height: 32px;
-    line-height: 32px;
-    padding: 0 36px 0 36px;
-    margin: auto;
+.tournament__team {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    text-align: center;
 }
 
-.tournament__match__team:before,
-.tournament__match__team:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 999px;
-    height: 2px;
-    margin-top: -1px;
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.tournament__match__team:after {
-    left: 100%;
-}
-
-.tournament__match__team:before {
-    right: 100%;
-}
-
-.tournament__match__team.winner {
+.tournament__team.winner {
     background-color: #d4edda; /* Зеленый для победителя */
 }
 
-.tournament__match__team.loser {
+.tournament__team.loser {
     background-color: #f8d7da; /* Красный для проигравшего */
 }
