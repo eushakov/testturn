@@ -92,12 +92,14 @@ button {
     display: flex;
     flex-direction: column;
     gap: 50px; /* Увеличенный промежуток между матчами */
+    position: relative;
 }
 
 .tournament__match {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: relative;
 }
 
 .tournament__team {
@@ -106,6 +108,7 @@ button {
     border: 1px solid #ddd;
     cursor: pointer;
     text-align: center;
+    position: relative;
 }
 
 .tournament__team.winner {
@@ -114,4 +117,31 @@ button {
 
 .tournament__team.loser {
     background-color: #f8d7da; /* Красный для проигравшего */
+}
+
+.tournament__team:before,
+.tournament__team:after {
+    content: '';
+    position: absolute;
+    background: #000;
+}
+
+.tournament__team:before {
+    width: 2px;
+    height: 50px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tournament__team:after {
+    width: 100px;
+    height: 2px;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+}
+
+.tournament__round:last-child .tournament__team:after {
+    display: none;
 }
