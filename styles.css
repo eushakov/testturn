@@ -5,7 +5,7 @@ body {
     margin: 20px;
 }
 
-h2 {
+h1, h2 {
     text-align: center;
 }
 
@@ -83,26 +83,23 @@ button {
 
 .tournament__grid {
     display: flex;
-    gap: 100px; /* Увеличенный промежуток между этапами */
-    align-items: stretch;
-    min-height: 400px;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-.tournament__round {
-    display: flex;
-    flex-direction: column;
-    gap: 50px; /* Увеличенный промежуток между матчами */
-    position: relative;
-}
-
-.tournament__match {
+.round {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    position: relative;
 }
 
-.tournament__team {
+.match {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.team {
     padding: 10px;
     background: #fff;
     border: 1px solid #ddd;
@@ -111,22 +108,18 @@ button {
     position: relative;
 }
 
-.tournament__team.winner {
+.team.winner {
     background-color: #d4edda; /* Зеленый для победителя */
 }
 
-.tournament__team.loser {
-    background-color: #f8d7da; /* Красный для проигравшего */
-}
-
-.tournament__team:before,
-.tournament__team:after {
+.team:before,
+.team:after {
     content: '';
     position: absolute;
     background: #000;
 }
 
-.tournament__team:before {
+.team:before {
     width: 2px;
     height: 50px;
     top: 100%;
@@ -134,14 +127,14 @@ button {
     transform: translateX(-50%);
 }
 
-.tournament__team:after {
-    width: 100px;
+.team:after {
+    width: 20px;
     height: 2px;
     top: 50%;
     left: 100%;
     transform: translateY(-50%);
 }
 
-.tournament__round:last-child .tournament__team:after {
+.round:last-child .team:after {
     display: none;
 }
