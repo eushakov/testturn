@@ -135,62 +135,87 @@ document.addEventListener('DOMContentLoaded', function () {
     // Функция для отрисовки сетки
     function renderBracket(data) {
         bracket.innerHTML = '';
-        const round = document.createElement('div');
-        round.className = 'tournament__round';
+        const rounds = Math.ceil(Math.log2(data.length * 2));
+        let currentMatches = data;
 
-        data.forEach((match, index) => {
-            const matchElement = document.createElement('div');
-            matchElement.className = 'tournament__match';
+        for (let roundIndex = 0; roundIndex < rounds; roundIndex++) {
+            const round = document.createElement('div');
+            round.className = 'round';
 
-            const team1Element = document.createElement('div');
-            team1Element.className = 'tournament__team';
-            team1Element.textContent = match.team1 || '';
+            currentMatches.forEach((match, index) => {
+                const matchElement = document.createElement('div');
+                matchElement.className = 'match';
 
-            const team2Element = document.createElement('div');
-            team2Element.className = 'tournament__team';
-            team2Element.textContent = match.team2 || '';
+                const team1Element = document.createElement('div');
+                team1Element.className = 'team';
+                team1Element.textContent = match.team1 || '';
+                team1Element.contentEditable = true;
 
-            // Обработчик выбора победителя
-            team1Element.addEventListener('click', function () {
-                if (!match.team1) return;
+                const team2Element = document.createElement('div');
+                team2Element.className = 'team';
+                team2Element.textContent = match.team2 || '';
+                team2Element.contentEditable = true;
+
+                // Обработчик двойного нажатия для выбора победителя
+                team1Element.addEventListener('dblclick', function () {
+                    if (!match.team1) return;
+
+                    if (match.winner === match.team1) {
+                        match.winner = null;
+                    } else {
+                        match.winner = match.team1;
+                    }
+
+                    renderBracket(data);
+                    saveTableData();
+                });
+
+                team2Element.addEventListener('dblclick', function () {
+                    if (!match.team2) return;
+
+                    if (match.winner === match.team2) {
+                        match.winner = null;
+                    } else {
+                        match.winner = match.team2;
+                    }
+
+                    renderBracket(data);
+                    saveTableData();
+                });
 
                 if (match.winner === match.team1) {
-                    match.winner = null;
-                } else {
-                    match.winner = match.team1;
+                    team1Element.classList.add('winner');
+                    team2Element.classList.remove('winner');
+                } else if (match.winner === match.team2) {
+                    team2Element.classList.add('winner');
+                    team1Element.classList.remove('winner');
                 }
 
-                renderBracket(data);
-                saveTableData();
+                matchElement.appendChild(team1Element);
+                matchElement.appendChild(team2Element);
+                round.appendChild(matchElement);
             });
 
-            team2Element.addEventListener('click', function () {
-                if (!match.team2) return;
+            bracket.appendChild(round);
 
-                if (match.winner === match.team2) {
-                    match.winner = null;
-                } else {
-                    match.winner = match.team2;
-                }
+            // Переход к следующему этапу
+            currentMatches = generateNextRound(currentMatches);
+        }
+    }
 
-                renderBracket(data);
-                saveTableData();
+    // Функция для генерации следующего этапа
+    function generateNextRound(matches) {
+        const nextMatches = [];
+        for (let i = 0; i < matches.length; i += 2) {
+            const winner1 = matches[i].winner;
+            const winner2 = matches[i + 1]?.winner || null;
+            nextMatches.push({
+                team1: winner1,
+                team2: winner2,
+                winner: null,
             });
-
-            if (match.winner === match.team1) {
-                team1Element.classList.add('winner');
-                team2Element.classList.add('loser');
-            } else if (match.winner === match.team2) {
-                team2Element.classList.add('winner');
-                team1Element.classList.add('loser');
-            }
-
-            matchElement.appendChild(team1Element);
-            matchElement.appendChild(team2Element);
-            round.appendChild(matchElement);
-        });
-
-        bracket.appendChild(round);
+        }
+        return nextMatches;
     }
 
     // Сохранение данных в localStorage
