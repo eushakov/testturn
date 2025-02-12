@@ -83,7 +83,7 @@ button {
 
 .tournament__grid {
     display: flex;
-    gap: 100px; /* Увеличенный промежуток между парами */
+    gap: 100px; /* Увеличенный промежуток между этапами */
     align-items: stretch;
     min-height: 400px;
 }
